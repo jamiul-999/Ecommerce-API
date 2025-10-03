@@ -9,14 +9,24 @@ import (
 )
 
 func Serve() {
+	manager := middleware.NewManager()
 
 	mux := http.NewServeMux()
 
-	mux.Handle("GET /products", middleware.Logger(http.HandlerFunc(handlers.GetProducts)))
+	mux.Handle("GET /products", manager.With(
+		http.HandlerFunc(handlers.GetProducts),
+		middleware.Logger,
+	))
 
-	mux.Handle("POST /products", middleware.Logger(http.HandlerFunc(handlers.CreateProduct)))
+	mux.Handle("POST /products", manager.With(
+		http.HandlerFunc(handlers.CreateProduct),
+		middleware.Logger,
+	))
 
-	mux.Handle("GET /products/{productID}", middleware.Logger(http.HandlerFunc(handlers.GetProductByID)))
+	mux.Handle("GET /products/{productID}", manager.With(
+		http.HandlerFunc(handlers.GetProductByID),
+		middleware.Logger,
+	))
 
 	fmt.Println("Server running on :8080")
 
