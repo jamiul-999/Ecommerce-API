@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"ecommerce-api/global_router"
 	"ecommerce-api/middleware"
 	"fmt"
 	"net/http"
@@ -16,7 +15,7 @@ func Serve() {
 
 	initRoutes(mux, manager)
 
-	globalRouter := global_router.GlobalRouter(mux)
+	globalRouter := middleware.CorsWithPreflight(mux)
 
 	fmt.Println("Server running on :8080")
 
