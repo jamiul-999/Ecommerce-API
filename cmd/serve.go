@@ -12,10 +12,16 @@ func Serve() {
 	mux := http.NewServeMux()
 
 	//globalRouter := middleware.CorsWithPreflight(mux)
-	wrappedMux := manager.WrapMux(mux,
-		middleware.Logger,
+	// wrappedMux := manager.WrapMux(mux,
+	// 	middleware.Logger,
+	// 	middleware.CorsWithPreflight,
+	// )
+	manager.Use(
 		middleware.CorsWithPreflight,
+		middleware.Logger,
 	)
+
+	wrappedMux := manager.WrapMux(mux)
 
 	initRoutes(mux, manager)
 
