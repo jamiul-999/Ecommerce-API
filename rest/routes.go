@@ -1,8 +1,8 @@
-package cmd
+package rest
 
 import (
-	"ecommerce-api/handlers"
-	"ecommerce-api/middleware"
+	"ecommerce-api/rest/handlers"
+	middleware "ecommerce-api/rest/middlewares"
 	"net/http"
 )
 
