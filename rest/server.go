@@ -20,7 +20,7 @@ func Start(cnf config.Config) {
 	mux := http.NewServeMux()
 	wrappedMux := manager.WrapMux(mux)
 
-	initRoutes(mux, manager)
+	//initRoutes(mux, manager)
 
 	addr := ":" + strconv.Itoa(cnf.HttpPort)
 	fmt.Println("Server running on port", addr)
