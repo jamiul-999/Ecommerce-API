@@ -11,7 +11,7 @@ type Product struct {
 	Title       string  `json:"title" db:"title"`
 	Description string  `json:"description" db:"description"`
 	Price       float64 `json:"price" db:"price"`
-	ImgURL      string  `json:"imageurl" db:"image_url"`
+	ImgURL      string  `json:"imageurl" db:"img_url"`
 }
 
 type ProductRepo interface {
