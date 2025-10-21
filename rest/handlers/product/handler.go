@@ -1,21 +1,20 @@
 package product
 
 import (
-	"ecommerce-api/repo"
 	middleware "ecommerce-api/rest/middlewares"
 )
 
 type Handler struct {
 	middlewares *middleware.Middlewares
-	productRepo repo.ProductRepo
+	svc         Service
 }
 
 func NewHandler(
 	middlewares *middleware.Middlewares,
-	productRepo repo.ProductRepo,
+	svc Service,
 ) *Handler {
 	return &Handler{
 		middlewares: middlewares,
-		productRepo: productRepo,
+		svc:         svc,
 	}
 }
