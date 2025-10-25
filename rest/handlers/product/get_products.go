@@ -1,10 +1,19 @@
 package product
 
 import (
+	"ecommerce-api/domain"
 	"ecommerce-api/util"
 	"net/http"
 	"strconv"
 )
+
+type Pagination struct {
+	Data       []*domain.Product `json:"items"`
+	Page       int64             `json:"page"`
+	Limit      int64             `json:"limit"`
+	TotalItems int64             `json:"totalItems"`
+	TotalPages int64             `json:"totalPages"`
+}
 
 func (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request) {
 	// get query parameters
@@ -17,11 +26,11 @@ func (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.ParseInt(pageAsStr, 10, 32)
 	limit, _ := strconv.ParseInt(limitAsStr, 10, 32)
 
-	if page == 0 {
+	if page <= 0 {
 		page = 1
 	}
 
-	if limit == 0 {
+	if limit <= 0 {
 		limit = 10
 	}
 
@@ -31,5 +40,19 @@ func (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	util.SendData(w, http.StatusOK, productList)
+	cnt, err := h.svc.Count()
+	if err != nil {
+		util.SendError(w, http.StatusInternalServerError, "Internal server error")
+		return
+	}
+
+	paginatedData := Pagination{
+		Data:       productList,
+		Page:       page,
+		Limit:      limit,
+		TotalItems: cnt,
+		TotalPages: cnt / limit,
+	}
+
+	util.SendData(w, http.StatusOK, paginatedData)
 }
