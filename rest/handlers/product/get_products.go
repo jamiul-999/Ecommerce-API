@@ -1,24 +1,13 @@
 package product
 
 import (
-	"ecommerce-api/domain"
 	"ecommerce-api/util"
 	"net/http"
 	"strconv"
 )
 
-type Pagination struct {
-	Data       []*domain.Product `json:"items"`
-	Page       int64             `json:"page"`
-	Limit      int64             `json:"limit"`
-	TotalItems int64             `json:"totalItems"`
-	TotalPages int64             `json:"totalPages"`
-}
-
 func (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request) {
-	// get query parameters
-	// get page from query params
-	// get limit from query params
+
 	reqQuery := r.URL.Query()
 	pageAsStr := reqQuery.Get("page")
 	limitAsStr := reqQuery.Get("limit")
@@ -46,13 +35,6 @@ func (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	paginatedData := Pagination{
-		Data:       productList,
-		Page:       page,
-		Limit:      limit,
-		TotalItems: cnt,
-		TotalPages: cnt / limit,
-	}
+	util.SendPage(w, productList, page, limit, cnt)
 
-	util.SendData(w, http.StatusOK, paginatedData)
 }
